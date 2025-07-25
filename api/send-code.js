@@ -2,6 +2,8 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
+  console.log('EMAIL_USER:', process.env.EMAIL_USER ? '已配置' : '未配置');
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -34,7 +36,7 @@ export default async function handler(req, res) {
       text: `您好，您的验证码是：${code}，5分钟内有效。`,
     });
 
-    // ⚠️ 这里可以将验证码保存到内存/数据库，这里先跳过
+    // 这里可以把验证码存储到数据库/缓存，方便后续校验（当前未实现）
     return res.status(200).json({ message: "验证码已发送" });
   } catch (err) {
     console.error("❌ 邮件发送失败", err);
